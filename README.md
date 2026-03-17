@@ -39,6 +39,19 @@ Then visit http://localhost:8000
 
 3. **SSL**: Enable Let's Encrypt SSL in IONOS for HTTPS
 
+## Push to GitHub
+
+1. Create a new repository on [github.com/new](https://github.com/new) (e.g. `cycroommedia.com`).
+
+2. Add the remote and push (replace `YOUR_USERNAME` with your GitHub username):
+
+```bash
+git remote add origin https://github.com/YOUR_USERNAME/cycroommedia.com.git
+git push -u origin main
+```
+
+3. For authentication, use a [Personal Access Token](https://github.com/settings/tokens) as password when prompted.
+
 ## Structure
 
 - `index.html` — Single-page site with all sections
