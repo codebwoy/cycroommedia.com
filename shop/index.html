@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop Demo — Cycroom Media WhatsApp Order</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shop.css">
+</head>
+<body>
+  <header class="shop-header">
+    <h1>Afroshop Demo</h1>
+    <p>Produktkatalog mit WhatsApp-Bestellung</p>
+    <button type="button" class="settings-toggle" id="settingsToggle" aria-expanded="false">
+      ⚙️ Einstellungen
+    </button>
+  </header>
+
+  <!-- Settings Panel (for shop owner) -->
+  <aside class="settings-panel" id="settingsPanel" hidden>
+    <h2>Shop-Einstellungen</h2>
+    <form id="settingsForm" class="settings-form">
+      <div class="settings-field">
+        <label for="whatsappNumber">WhatsApp Bestellnummer</label>
+        <input type="text" id="whatsappNumber" name="whatsappNumber" placeholder="4915712345678" inputmode="numeric" pattern="[0-9]+">
+        <small>Internationales Format, ohne + und Leerzeichen (z.B. 4915712345678)</small>
+      </div>
+      <div class="settings-field">
+        <label for="greetingText">Begrüßungstext</label>
+        <textarea id="greetingText" name="greetingText" rows="2" placeholder="Hallo! Ich möchte gerne bestellen:"></textarea>
+        <small>Kurzer Text am Anfang der Bestellnachricht</small>
+      </div>
+      <button type="submit" class="btn-save">Speichern</button>
+    </form>
+  </aside>
+
+  <main class="shop-main">
+    <div class="product-grid" id="productGrid"></div>
+  </main>
+
+  <script src="config.js"></script>
+  <script>
+    // Merge localStorage settings into SHOP_CONFIG on load
+    (function () {
+      try {
+        const stored = localStorage.getItem('cycroom_shop_settings');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed.whatsappNumber) SHOP_CONFIG.whatsappNumber = parsed.whatsappNumber;
+          if (parsed.greetingText !== undefined) SHOP_CONFIG.greetingText = parsed.greetingText;
+          if (parsed.closingText !== undefined) SHOP_CONFIG.closingText = parsed.closingText;
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <script src="shop.js"></script>
+  <script>
+    // Demo products
+    const DEMO_PRODUCTS = [
+      { id: '1', name: 'Yams 5kg', price: '4.99', image: '' },
+      { id: '2', name: 'Plantain (Kochbananen) 1kg', price: '3.49', image: '' },
+      { id: '3', name: 'Fufu Mehl 500g', price: '5.99', image: '' },
+      { id: '4', name: 'Palmöl 1L', price: '6.50', image: '' },
+      { id: '5', name: 'Egusi Samen 250g', price: '', image: '' },
+      { id: '6', name: 'Garri 2kg', price: '7.99', image: '' }
+    ];
+
+    document.addEventListener('DOMContentLoaded', function () {
+      WhatsAppOrder.renderProducts(DEMO_PRODUCTS, '#productGrid');
+
+      // Settings panel toggle
+      const toggle = document.getElementById('settingsToggle');
+      const panel = document.getElementById('settingsPanel');
+      toggle.addEventListener('click', function () {
+        const expanded = panel.hidden;
+        panel.hidden = !expanded;
+        toggle.setAttribute('aria-expanded', expanded);
+      });
+
+      // Populate form from config
+      document.getElementById('whatsappNumber').value = SHOP_CONFIG.whatsappNumber || '';
+      document.getElementById('greetingText').value = SHOP_CONFIG.greetingText || 'Hallo! Ich möchte gerne bestellen:';
+
+      // Save settings
+      document.getElementById('settingsForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const number = document.getElementById('whatsappNumber').value.trim();
+        const greeting = document.getElementById('greetingText').value.trim();
+        SHOP_CONFIG.whatsappNumber = number;
+        SHOP_CONFIG.greetingText = greeting || 'Hallo! Ich möchte gerne bestellen:';
+        localStorage.setItem('cycroom_shop_settings', JSON.stringify({
+          whatsappNumber: SHOP_CONFIG.whatsappNumber,
+          greetingText: SHOP_CONFIG.greetingText,
+          closingText: SHOP_CONFIG.closingText
+        }));
+        alert('Einstellungen gespeichert. Seite wird neu geladen.');
+        location.reload();
+      });
+    });
+  </script>
+</body>
+</html>

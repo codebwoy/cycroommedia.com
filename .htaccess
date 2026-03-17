@@ -1,0 +1,5 @@
+# Cycroom Media - IONOS Apache config
+# Redirect non-www to www.cycroommedia.com
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^cycroommedia\.com$ [NC]
+RewriteRule ^(.*)$ https://www.cycroommedia.com/$1 [R=301,L]
