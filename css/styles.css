@@ -87,6 +87,119 @@ img {
   color: var(--accent);
 }
 
+/* Language dropdown */
+.lang-dropdown {
+  position: relative;
+  list-style: none;
+}
+
+.lang-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  border: none;
+  color: var(--gray-200);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.5rem 0.6rem;
+  border-radius: 8px;
+  transition: color var(--transition), background var(--transition);
+}
+
+.lang-trigger:hover {
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.lang-trigger .lang-globe {
+  flex-shrink: 0;
+}
+
+.lang-trigger .lang-chevron {
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: transform var(--transition);
+}
+
+.lang-dropdown.open .lang-chevron {
+  transform: rotate(180deg);
+}
+
+.lang-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 200px;
+  background: var(--white);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0;
+  padding-inline-start: 0;
+  display: none;
+  z-index: 200;
+}
+
+.lang-menu.open {
+  display: block;
+}
+
+.lang-menu li {
+  margin: 0;
+  list-style: none;
+}
+
+.lang-menu button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  color: var(--black);
+  font-size: 0.95rem;
+  font-family: var(--font);
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+
+.lang-menu button:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.lang-menu button.active .lang-name,
+.lang-menu button.active .lang-check {
+  color: var(--accent);
+}
+
+.lang-menu button .lang-flag {
+  font-size: 1.25rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.lang-menu button .lang-name {
+  flex: 1;
+}
+
+.lang-menu button .lang-check {
+  font-size: 1rem;
+  font-weight: 700;
+  color: transparent;
+  flex-shrink: 0;
+}
+
+.lang-menu button.active .lang-check {
+  color: var(--accent);
+}
+
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -961,6 +1074,15 @@ img {
     transform: translateY(0);
     opacity: 1;
     visibility: visible;
+  }
+
+  .lang-dropdown {
+    align-self: flex-start;
+  }
+
+  .lang-menu {
+    right: auto;
+    left: 0;
   }
 
   .hero-cta {
